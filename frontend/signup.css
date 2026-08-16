@@ -1,0 +1,855 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+
+/* =====================================
+   RESET
+===================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+
+/* =====================================
+   BODY
+===================================== */
+
+body {
+    min-height: 100vh;
+    background: #ffffff;
+    color: #111111;
+}
+
+
+/* =====================================
+   MAIN PAGE
+===================================== */
+
+.signup-page {
+    min-height: 100vh;
+    display: flex;
+}
+
+
+/* =====================================
+   LEFT BLACK AI SECTION
+===================================== */
+
+.brand-section {
+
+    width: 48%;
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at 70% 20%,
+            rgba(255,255,255,.08),
+            transparent 25%
+        ),
+        #050505;
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+
+    padding: 70px;
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+
+/* =====================================
+   AI NETWORK BACKGROUND
+===================================== */
+
+.ai-network {
+    position: absolute;
+
+    inset: 0;
+
+    opacity: .6;
+
+    pointer-events: none;
+}
+
+
+/* AI nodes */
+
+.node {
+    position: absolute;
+
+    width: 7px;
+    height: 7px;
+
+    background: #ffffff;
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 10px rgba(255,255,255,.7),
+        0 0 25px rgba(255,255,255,.3);
+
+    animation: pulse 3s infinite;
+}
+
+
+/* Node positions */
+
+.node1 {
+    top: 18%;
+    right: 20%;
+}
+
+.node2 {
+    top: 35%;
+    right: 8%;
+}
+
+.node3 {
+    top: 52%;
+    right: 25%;
+}
+
+.node4 {
+    bottom: 25%;
+    right: 12%;
+}
+
+.node5 {
+    bottom: 12%;
+    left: 35%;
+}
+
+.node6 {
+    top: 12%;
+    left: 55%;
+}
+
+
+/* Connecting lines */
+
+.ai-network::before,
+.ai-network::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 420px;
+    height: 420px;
+
+    border: 1px solid rgba(255,255,255,.08);
+
+    transform: rotate(25deg);
+
+    right: -100px;
+    top: 25%;
+}
+
+
+/* second AI ring */
+
+.ai-network::after {
+
+    width: 300px;
+    height: 300px;
+
+    right: 10%;
+    top: 45%;
+
+    border-radius: 50%;
+
+    transform: none;
+
+    border-color: rgba(255,255,255,.06);
+}
+
+
+/* Pulse */
+
+@keyframes pulse {
+
+    0% {
+        transform: scale(1);
+        opacity: .5;
+    }
+
+    50% {
+        transform: scale(1.8);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: .5;
+    }
+
+}
+
+
+/* =====================================
+   BRAND CONTENT
+===================================== */
+
+.brand-content {
+
+    position: relative;
+
+    z-index: 2;
+
+    max-width: 520px;
+}
+
+
+/* =====================================
+   LOGO
+===================================== */
+
+.brand-logo {
+
+    width: 55px;
+    height: 55px;
+
+    border: 1px solid rgba(255,255,255,.4);
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    font-size: 18px;
+
+    font-weight: 800;
+
+    margin-bottom: 25px;
+
+    background: rgba(255,255,255,.03);
+
+    backdrop-filter: blur(10px);
+}
+
+
+/* =====================================
+   BRAND NAME
+===================================== */
+
+.brand-content h1 {
+
+    font-size: 42px;
+
+    font-weight: 800;
+
+    letter-spacing: -2px;
+
+    margin-bottom: 55px;
+}
+
+
+.brand-content h1 span {
+    color: #777;
+}
+
+
+/* =====================================
+   MAIN HEADING
+===================================== */
+
+.brand-content h2 {
+
+    font-size: 42px;
+
+    line-height: 1.12;
+
+    letter-spacing: -2px;
+
+    margin-bottom: 25px;
+}
+
+
+/* =====================================
+   DESCRIPTION
+===================================== */
+
+.brand-content p {
+
+    max-width: 450px;
+
+    color: #999;
+
+    font-size: 15px;
+
+    line-height: 1.8;
+}
+
+
+/* =====================================
+   LINE
+===================================== */
+
+.brand-line {
+
+    width: 70px;
+
+    height: 2px;
+
+    background: white;
+
+    margin: 35px 0;
+}
+
+
+/* =====================================
+   POINTS
+===================================== */
+
+.brand-points {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 16px;
+}
+
+
+.brand-points div {
+
+    color: #aaa;
+
+    font-size: 13px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+}
+
+
+.brand-points span {
+
+    color: white;
+
+    font-weight: 700;
+
+    font-size: 12px;
+}
+
+
+/* =====================================
+   RIGHT FORM
+===================================== */
+
+.form-section {
+
+    width: 52%;
+
+    min-height: 100vh;
+
+    background: #ffffff;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 40px;
+}
+
+
+/* =====================================
+   SIGNUP CONTAINER
+===================================== */
+
+.signup-container {
+
+    width: 440px;
+
+    color: #111;
+
+    animation: fadeIn .7s ease;
+}
+
+
+@keyframes fadeIn {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(20px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+}
+
+
+/* =====================================
+   MOBILE LOGO
+===================================== */
+
+.mobile-logo {
+
+    display: none;
+
+    font-size: 22px;
+
+    font-weight: 800;
+
+    margin-bottom: 40px;
+}
+
+
+/* =====================================
+   FORM HEADER
+===================================== */
+
+.form-header {
+
+    margin-bottom: 35px;
+}
+
+
+.welcome {
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+    color: #777;
+}
+
+
+.form-header h2 {
+
+    margin-top: 10px;
+
+    font-size: 32px;
+
+    letter-spacing: -1px;
+
+    color: #111;
+}
+
+
+.form-header p {
+
+    margin-top: 10px;
+
+    color: #777;
+
+    font-size: 14px;
+}
+
+
+/* =====================================
+   INPUT
+===================================== */
+
+.input-box {
+
+    margin-bottom: 22px;
+}
+
+
+.input-box label {
+
+    display: block;
+
+    margin-bottom: 9px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    color: #222;
+}
+
+
+.input-wrapper {
+
+    position: relative;
+}
+
+
+.input-icon {
+
+    position: absolute;
+
+    left: 15px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #999;
+
+    font-size: 14px;
+
+    z-index: 2;
+}
+
+
+.input-box input {
+
+    width: 100%;
+
+    height: 52px;
+
+    padding: 0 15px 0 45px;
+
+    border: 1px solid #dddddd;
+
+    border-radius: 10px;
+
+    background: #fafafa;
+
+    color: #111;
+
+    outline: none;
+
+    font-size: 14px;
+
+    transition: .25s;
+}
+
+
+.input-box input::placeholder {
+    color: #aaa;
+}
+
+
+.input-box input:hover {
+
+    border-color: #aaa;
+
+    background: white;
+}
+
+
+.input-box input:focus {
+
+    border-color: #111;
+
+    background: white;
+
+    box-shadow:
+        0 0 0 3px rgba(0,0,0,.06);
+}
+
+
+/* =====================================
+   PASSWORD INFO
+===================================== */
+
+.password-info {
+
+    font-size: 11px;
+
+    color: #777;
+
+    margin-top: -10px;
+
+    margin-bottom: 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+}
+
+
+.password-info span {
+
+    color: #111;
+
+    font-weight: 700;
+}
+
+
+/* =====================================
+   TERMS
+===================================== */
+
+.terms {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 9px;
+
+    font-size: 11px;
+
+    color: #777;
+
+    margin-bottom: 22px;
+
+    cursor: pointer;
+
+    line-height: 1.5;
+}
+
+
+.terms input {
+
+    width: 15px;
+    height: 15px;
+
+    accent-color: #111;
+
+    cursor: pointer;
+}
+
+
+.terms a {
+
+    color: #111;
+
+    font-weight: 600;
+
+    text-decoration: none;
+}
+
+
+.terms a:hover {
+    text-decoration: underline;
+}
+
+
+/* =====================================
+   SIGNUP BUTTON
+===================================== */
+
+.signup-btn {
+
+    width: 100%;
+
+    height: 54px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #050505;
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 12px;
+
+    transition: .3s;
+}
+
+
+.signup-btn:hover {
+
+    background: #222;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,.15);
+}
+
+
+.signup-btn:active {
+    transform: translateY(0);
+}
+
+
+.arrow {
+
+    font-size: 19px;
+
+    transition: .3s;
+}
+
+
+.signup-btn:hover .arrow {
+    transform: translateX(5px);
+}
+
+
+/* =====================================
+   LOGIN LINK
+===================================== */
+
+.login-link {
+
+    text-align: center;
+
+    margin-top: 28px;
+
+    color: #777;
+
+    font-size: 13px;
+}
+
+
+.login-link a {
+
+    margin-left: 5px;
+
+    color: #111;
+
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+
+/* =====================================
+   HOME
+===================================== */
+
+.home-link {
+
+    text-align: center;
+
+    margin-top: 20px;
+}
+
+
+.home-link a {
+
+    color: #888;
+
+    font-size: 12px;
+
+    text-decoration: none;
+
+    transition: .2s;
+}
+
+
+.home-link a:hover {
+    color: #111;
+}
+
+
+/* =====================================
+   SECURITY
+===================================== */
+
+.secure-text {
+
+    text-align: center;
+
+    margin-top: 30px;
+
+    color: #aaa;
+
+    font-size: 10px;
+
+    letter-spacing: .3px;
+}
+
+
+/* =====================================
+   RESPONSIVE
+===================================== */
+
+@media (max-width: 900px) {
+
+    .brand-section {
+
+        width: 42%;
+
+        padding: 40px;
+    }
+
+    .form-section {
+
+        width: 58%;
+    }
+
+    .brand-content h1 {
+        font-size: 32px;
+    }
+
+    .brand-content h2 {
+        font-size: 30px;
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .signup-page {
+        display: block;
+    }
+
+    .brand-section {
+        display: none;
+    }
+
+    .form-section {
+
+        width: 100%;
+
+        min-height: 100vh;
+
+        padding: 30px 20px;
+    }
+
+    .signup-container {
+
+        width: 100%;
+
+        max-width: 420px;
+    }
+
+    .mobile-logo {
+        display: block;
+    }
+
+}
+
+
+@media (max-width: 400px) {
+
+    .form-section {
+        padding: 25px 18px;
+    }
+
+    .form-header h2 {
+        font-size: 27px;
+    }
+
+}

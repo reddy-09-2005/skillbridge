@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SkillBridge AI Dashboard</title>
+
+    <link rel="stylesheet" href="dashboard.css">
+
+    <!-- Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+</head>
+
+<body>
+
+<!-- =====================================
+     SOLAR BACKGROUND
+===================================== -->
+
+<div class="solar-bg">
+
+    <div class="sun"></div>
+
+    <div class="solar-glow glow1"></div>
+    <div class="solar-glow glow2"></div>
+
+    <div class="solar-orbit orbit1"></div>
+    <div class="solar-orbit orbit2"></div>
+
+</div>
+
+
+<!-- =====================================
+     SIDEBAR
+===================================== -->
+
+<aside class="sidebar">
+
+    <div class="brand">
+
+        <div class="brand-icon">
+            <i class="fa-solid fa-sun"></i>
+        </div>
+
+        <div>
+            <h1>SkillBridge</h1>
+            <span>AI CAREER SYSTEM</span>
+        </div>
+
+    </div>
+
+
+    <nav>
+
+        <a href="#"
+           data-target="dashboard-section"
+           class="nav-link active-link">
+
+            <i class="fa-solid fa-chart-line"></i>
+            <span>Dashboard</span>
+
+        </a>
+
+
+        <a href="#"
+           data-target="upload-section"
+           class="nav-link">
+
+            <i class="fa-solid fa-file-arrow-up"></i>
+            <span>Upload Resume</span>
+
+        </a>
+
+
+        <a href="#"
+           data-target="jobs-section"
+           class="nav-link">
+
+            <i class="fa-solid fa-briefcase"></i>
+            <span>Job Recommendations</span>
+
+        </a>
+
+
+        <a href="#"
+           data-target="history-section"
+           class="nav-link">
+
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <span>Resume History</span>
+
+        </a>
+
+
+        <a href="#"
+           data-target="profile-section"
+           class="nav-link">
+
+            <i class="fa-solid fa-user"></i>
+            <span>Profile</span>
+
+        </a>
+
+
+        <a href="#" id="logoutLink" class="logout">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Logout</span>
+
+        </a>
+
+    </nav>
+
+
+    <!-- ENERGY STATUS -->
+
+    <div class="energy-card">
+
+        <div class="energy-icon">
+            <i class="fa-solid fa-bolt"></i>
+        </div>
+
+        <div>
+            <strong>AI Engine</strong>
+            <span>System Active</span>
+        </div>
+
+        <div class="status-dot"></div>
+
+    </div>
+
+</aside>
+
+
+
+<!-- =====================================
+     MAIN CONTENT
+===================================== -->
+
+<main class="main">
+
+
+    <!-- TOP BAR -->
+
+    <header class="topbar">
+
+        <div>
+
+            <span class="small-title">
+                SKILLBRIDGE AI
+            </span>
+
+            <h2 id="sectionTitle">
+                Dashboard
+            </h2>
+
+        </div>
+
+
+        <div class="profile">
+
+            <div class="profile-info">
+
+                <span class="welcome">
+                    Welcome back
+                </span>
+
+                <strong id="welcomeText">
+                    User
+                </strong>
+
+            </div>
+
+
+            <img
+    src="https://i.pravatar.cc/100?img=12"
+    alt="Profile"
+>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================
+         DASHBOARD
+    ===================================== -->
+
+    <section
+        id="dashboard-section"
+        class="section active"
+    >
+
+        <!-- HERO -->
+
+        <div class="hero">
+
+            <div class="hero-content">
+
+                <span class="hero-label">
+                    <i class="fa-solid fa-sun"></i>
+                    AI POWERED CAREER PLATFORM
+                </span>
+
+                <h1>
+                    Power your career<br>
+                    with <span>AI intelligence.</span>
+                </h1>
+
+                <p>
+                    Analyze your skills, discover opportunities,
+                    and find jobs that match your career potential.
+                </p>
+
+                <button
+                    class="primary-btn"
+                    data-target="upload-section"
+                >
+
+                    <i class="fa-solid fa-bolt"></i>
+
+                    Analyze My Resume
+
+                </button>
+
+            </div>
+
+
+            <div class="hero-sun">
+
+                <div class="sun-core">
+
+                    <i class="fa-solid fa-sun"></i>
+
+                </div>
+
+                <div class="energy-ring ring1"></div>
+                <div class="energy-ring ring2"></div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- STAT CARDS -->
+
+        <div class="stats-grid">
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon resume-icon">
+                    <i class="fa-solid fa-file-lines"></i>
+                </div>
+
+                <div>
+
+                    <span>Total Resumes</span>
+
+                    <strong id="totalResumes">
+                        0
+                    </strong>
+
+                </div>
+
+                <div class="stat-line"></div>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon skill-icon">
+                    <i class="fa-solid fa-brain"></i>
+                </div>
+
+                <div>
+
+                    <span>Skills Detected</span>
+
+                    <strong id="totalSkills">
+                        0
+                    </strong>
+
+                </div>
+
+                <div class="stat-line"></div>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon job-icon">
+                    <i class="fa-solid fa-briefcase"></i>
+                </div>
+
+                <div>
+
+                    <span>Jobs Found</span>
+
+                    <strong id="totalJobs">
+                        0
+                    </strong>
+
+                </div>
+
+                <div class="stat-line"></div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- SYSTEM PANEL -->
+
+        <div class="system-panel">
+
+            <div>
+
+                <span class="panel-label">
+                    <i class="fa-solid fa-circle-nodes"></i>
+                    AI CAREER ENGINE
+                </span>
+
+                <h2>
+                    Your career energy is building.
+                </h2>
+
+                <p>
+                    Upload your latest resume to let SkillBridge
+                    analyze your skills and discover suitable jobs.
+                </p>
+
+            </div>
+
+
+            <div class="energy-meter">
+
+                <div class="meter-top">
+
+                    <span>Career Analysis</span>
+
+                    <strong>ACTIVE</strong>
+
+                </div>
+
+                <div class="meter">
+
+                    <div class="meter-fill"></div>
+
+                </div>
+
+                <small>
+                    AI recommendation engine ready
+                </small>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================
+         UPLOAD RESUME
+    ===================================== -->
+
+    <section
+        id="upload-section"
+        class="section"
+    >
+
+        <div class="page-header">
+
+            <span>AI RESUME ANALYSIS</span>
+
+            <h1>Upload your resume</h1>
+
+            <p>
+                Let AI identify your skills and career opportunities.
+            </p>
+
+        </div>
+
+
+        <div class="panel upload-panel">
+
+            <div class="upload-icon">
+
+                <i class="fa-solid fa-file-arrow-up"></i>
+
+            </div>
+
+            <h2>
+                Upload Resume
+            </h2>
+
+            <p>
+                Supported formats: PDF, DOCX, TXT
+            </p>
+
+
+            <label for="resume-input">
+
+                Select Resume
+
+            </label>
+
+
+            <input
+                type="file"
+                id="resume-input"
+                accept=".pdf,.docx,.txt"
+            >
+
+
+            <button
+                id="upload-btn"
+                class="primary-btn"
+            >
+
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+                Upload & Analyze
+
+            </button>
+
+
+            <div id="status"></div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================
+         JOBS
+    ===================================== -->
+
+    <section
+        id="jobs-section"
+        class="section"
+    >
+
+        <div class="page-header">
+
+            <span>AI CAREER MATCHING</span>
+
+            <h1>Job Recommendations</h1>
+
+            <p>
+                Find opportunities based on your skills.
+            </p>
+
+        </div>
+
+
+        <div class="panel">
+
+            <label for="keywords-input">
+                Job Keywords
+            </label>
+
+            <input
+                type="text"
+                id="keywords-input"
+                placeholder="Example: Python Developer"
+            >
+
+
+            <label for="location-input">
+                Location
+            </label>
+
+            <input
+                type="text"
+                id="location-input"
+                placeholder="Example: Bengaluru, India"
+            >
+
+
+            <button
+                id="find-jobs-btn"
+                class="primary-btn"
+            >
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                Find Matching Jobs
+
+            </button>
+
+
+            <div id="jobs-status"></div>
+
+        </div>
+
+
+        <div id="job-list"></div>
+
+    </section>
+
+
+
+    <!-- =====================================
+         RESUME HISTORY
+    ===================================== -->
+
+    <section
+        id="history-section"
+        class="section"
+    >
+
+        <div class="page-header">
+
+            <span>YOUR CAREER DATA</span>
+
+            <h1>Resume History</h1>
+
+            <p>
+                View your previous resume analyses.
+            </p>
+
+        </div>
+
+
+        <div class="history panel">
+
+            <table id="history-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>#</th>
+
+                        <th>Skills Detected</th>
+
+                        <th>Uploaded</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="history-body">
+
+                    <tr>
+
+                        <td colspan="3">
+                            No resumes uploaded yet.
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================
+         PROFILE
+    ===================================== -->
+
+    <section
+        id="profile-section"
+        class="section"
+    >
+
+        <div class="page-header">
+
+            <span>ACCOUNT</span>
+
+            <h1>Your Profile</h1>
+
+        </div>
+
+
+        <div class="panel profile-panel">
+
+            <div class="big-profile-icon">
+
+                <i class="fa-solid fa-user"></i>
+
+            </div>
+
+
+            <div>
+
+                <span>Email Address</span>
+
+                <h2 id="profileEmail">
+                    -
+                </h2>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+
+<!-- =====================================
+     EXISTING JAVASCRIPT
+===================================== -->
+
+<script src="api.js"></script>
+<script src="app.js"></script>
+<script src="joblist.js"></script>
+<script src="dashboard.js"></script>
+
+
+<!-- =====================================
+     SECTION SWITCHING
+===================================== -->
+
+<script>
+
+document.querySelectorAll(".nav-link").forEach(link => {
+
+    link.addEventListener("click", function(e) {
+
+        e.preventDefault();
+
+        const target =
+            this.getAttribute("data-target");
+
+        document
+            .querySelectorAll(".section")
+            .forEach(section => {
+
+                section.classList.remove("active");
+
+            });
+
+
+        document
+            .getElementById(target)
+            .classList.add("active");
+
+
+        document
+            .querySelectorAll(".nav-link")
+            .forEach(nav => {
+
+                nav.classList.remove("active-link");
+
+            });
+
+
+        this.classList.add("active-link");
+
+
+        const title =
+            this.querySelector("span").textContent;
+
+        document.getElementById(
+            "sectionTitle"
+        ).textContent = title;
+
+    });
+
+});
+
+
+
+/* Hero button */
+
+document
+    .querySelectorAll("[data-target]")
+    .forEach(button => {
+
+        if (
+            !button.classList.contains("nav-link")
+        ) {
+
+            button.addEventListener(
+                "click",
+                function() {
+
+                    const target =
+                        this.getAttribute("data-target");
+
+                    document
+                        .querySelectorAll(".section")
+                        .forEach(section => {
+
+                            section.classList.remove(
+                                "active"
+                            );
+
+                        });
+
+                    document
+                        .getElementById(target)
+                        .classList.add("active");
+
+                }
+            );
+
+        }
+
+    });
+
+</script>
+
+</body>
+</html>

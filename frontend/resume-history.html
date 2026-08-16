@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkillBridge - Resume History</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+body{background:#f4f7fc;padding:40px;}
+.container{max-width:700px;margin:0 auto;background:white;padding:30px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.1);}
+h2{color:#2563eb;margin-bottom:15px;}
+a{color:#2563eb;text-decoration:none;font-weight:bold;}
+</style>
+</head>
+<body>
+<div class="container">
+<h2>Resume History</h2>
+<p>Coming soon — this will show your past uploaded resumes and match results.</p>
+<br>
+<a href="dashboard.html">← Back to Dashboard</a>
+</div>
+<script>
+const token = localStorage.getItem("token");
+if (!token) window.location.href = "login.html";
+</script>
+</body>
+</html>
