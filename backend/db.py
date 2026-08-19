@@ -6,6 +6,9 @@ conn = mysql.connector.connect(
     user=Config.MYSQL_USER,
     password=Config.MYSQL_PASSWORD,
     database=Config.MYSQL_DATABASE,
-    
+    port=Config.MYSQL_PORT,
+    use_pure=True,
+    ssl_disabled=False
 )
+
 cursor = conn.cursor(dictionary=True, buffered=True)
