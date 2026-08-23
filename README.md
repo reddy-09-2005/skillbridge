@@ -106,4 +106,4 @@ variables with `os.getenv(...)`.
 
 ## License
 
-Personal / educational project.
+Personal / educational project

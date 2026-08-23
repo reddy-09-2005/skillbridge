@@ -1,4 +1,15 @@
-const API_BASE_URL = "http://127.0.0.1:5000/api";
+/**
+ * SkillBridge AI - Frontend API Client
+ * Dynamically resolves API URL across local development, Docker, and Cloud deployments (Render, Vercel, Railway).
+ */
+
+const API_BASE_URL = window.API_BASE_URL || (
+  (window.location.port === "5500" || window.location.port === "5501" || window.location.protocol === "file:")
+    ? "http://127.0.0.1:5000/api"
+    : (window.location.origin ? `${window.location.origin}/api` : "http://127.0.0.1:5000/api")
+);
+
+window.API_BASE_URL = API_BASE_URL;
 
 function authHeaders() {
   const token = localStorage.getItem("token");
@@ -44,4 +55,4 @@ async function searchJobs(keywords, location, limit = 25) {
   return res.json();
 }
 
-window.SkillBridgeAPI = { uploadResume, getRecommendations, searchJobs };
+window.SkillBridgeAPI = { uploadResume, getRecommendations, searchJobs, API_BASE_URL };
