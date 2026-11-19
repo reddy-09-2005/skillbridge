@@ -5,6 +5,7 @@ Includes connection pooling, auto-reconnect, and auto-table initialization.
 """
 
 import logging
+import threading
 import mysql.connector
 from mysql.connector import Error as MySQLError
 from config import Config
@@ -15,10 +16,29 @@ _conn = None
 
 
 def get_db():
-    """Get an active MySQL database connection with auto-reconnect."""
+    """Get an active MySQL database connection with safe auto-reconnect."""
     global _conn
-    try:
-        if _conn is None or not _conn.is_connected():
+    need_connect = False
+
+    if _conn is None:
+        need_connect = True
+    else:
+        try:
+            if not _conn.is_connected():
+                need_connect = True
+            else:
+                _conn.ping(reconnect=True, attempts=1, delay=0)
+        except Exception as e:
+            logger.warning(f"MySQL connection check failed ({e}), reconnecting...")
+            try:
+                _conn.close()
+            except Exception:
+                pass
+            _conn = None
+            need_connect = True
+
+    if need_connect:
+        try:
             _conn = mysql.connector.connect(
                 host=Config.MYSQL_HOST,
                 user=Config.MYSQL_USER,
@@ -29,24 +49,10 @@ def get_db():
                 ssl_disabled=False,
                 autocommit=False
             )
-        else:
-            _conn.ping(reconnect=True, attempts=3, delay=1)
-    except MySQLError as e:
-        logger.error(f"MySQL Connection Error: {e}")
-        # Try one fresh reconnect attempt
-        try:
-            _conn = mysql.connector.connect(
-                host=Config.MYSQL_HOST,
-                user=Config.MYSQL_USER,
-                password=Config.MYSQL_PASSWORD,
-                database=Config.MYSQL_DATABASE,
-                port=Config.MYSQL_PORT,
-                use_pure=True,
-                ssl_disabled=False
-            )
-        except Exception as retry_err:
-            logger.error(f"MySQL Reconnect Failed: {retry_err}")
+        except Exception as err:
+            logger.error(f"MySQL Connection Error: {err}")
             raise
+
     return _conn
 
 
@@ -67,43 +73,81 @@ class ResilientConnectionProxy:
 
 class ResilientCursorProxy:
     """Proxy object providing transparent dictionary+buffered cursor with auto-reconnect."""
-    def _get_cursor(self):
-        c = get_db()
-        return c.cursor(dictionary=True, buffered=True)
+    def __init__(self):
+        self._local = threading.local()
 
-    def execute(self, operation, params=None, multi=False):
+    def _get_cursor(self):
+        active_conn = get_db()
+        cursor_obj = getattr(self._local, "cursor", None)
+        stored_conn = getattr(self._local, "conn", None)
+
+        if cursor_obj is None or stored_conn is not active_conn:
+            cursor_obj = active_conn.cursor(dictionary=True, buffered=True)
+            self._local.cursor = cursor_obj
+            self._local.conn = active_conn
+        return cursor_obj
+
+    def execute(self, operation, params=None):
         try:
-            c = self._get_cursor()
-            return c.execute(operation, params, multi=multi)
-        except MySQLError:
-            # Reconnect and retry once
-            get_db()
-            c = self._get_cursor()
-            return c.execute(operation, params, multi=multi)
+            cursor_obj = self._get_cursor()
+            if params is not None:
+                return cursor_obj.execute(operation, params)
+            return cursor_obj.execute(operation)
+        except Exception as e:
+            logger.warning(f"Query execution failed, reconnecting and retrying: {e}")
+            active_conn = get_db()
+            cursor_obj = active_conn.cursor(dictionary=True, buffered=True)
+            self._local.cursor = cursor_obj
+            self._local.conn = active_conn
+            if params is not None:
+                return cursor_obj.execute(operation, params)
+            return cursor_obj.execute(operation)
 
     def executemany(self, operation, seq_params):
-        c = self._get_cursor()
-        return c.executemany(operation, seq_params)
+        try:
+            cursor_obj = self._get_cursor()
+            return cursor_obj.executemany(operation, seq_params)
+        except Exception as e:
+            logger.warning(f"Query executemany failed, reconnecting and retrying: {e}")
+            active_conn = get_db()
+            cursor_obj = active_conn.cursor(dictionary=True, buffered=True)
+            self._local.cursor = cursor_obj
+            self._local.conn = active_conn
+            return cursor_obj.executemany(operation, seq_params)
 
     def fetchone(self):
-        return self._get_cursor().fetchone()
+        cursor_obj = self._get_cursor()
+        return cursor_obj.fetchone()
 
     def fetchall(self):
-        return self._get_cursor().fetchall()
+        cursor_obj = self._get_cursor()
+        return cursor_obj.fetchall()
 
     def fetchmany(self, size=None):
-        return self._get_cursor().fetchmany(size)
+        cursor_obj = self._get_cursor()
+        if size is not None:
+            return cursor_obj.fetchmany(size)
+        return cursor_obj.fetchmany()
 
     @property
     def lastrowid(self):
-        return self._get_cursor().lastrowid
+        cursor_obj = self._get_cursor()
+        return cursor_obj.lastrowid
 
     @property
     def rowcount(self):
-        return self._get_cursor().rowcount
+        cursor_obj = self._get_cursor()
+        return cursor_obj.rowcount
 
     def close(self):
-        pass
+        cursor_obj = getattr(self._local, "cursor", None)
+        if cursor_obj:
+            try:
+                cursor_obj.close()
+            except Exception:
+                pass
+            self._local.cursor = None
+            self._local.conn = None
 
 
 # Backwards-compatible proxies for existing blueprint imports

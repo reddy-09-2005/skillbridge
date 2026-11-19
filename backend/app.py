@@ -56,6 +56,14 @@ def create_app():
         @app.route("/", defaults={"filename": "index.html"})
         @app.route("/<path:filename>")
         def serve_frontend(filename):
+
+            # Never let this catch-all swallow API requests.
+            # If we get here for something under /api/, it means
+            # no real API route matched — return a proper 404
+            # instead of silently serving index.html.
+            if filename.startswith("api/"):
+                return jsonify({"error": f"API route /{filename} not found"}), 404
+
             file_target = os.path.join(frontend_path, filename)
             if os.path.isfile(file_target):
                 return send_from_directory(frontend_path, filename)

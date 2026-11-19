@@ -53,20 +53,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const titles = {
 
-        "dashboard-section":
-            "Dashboard",
-
-        "upload-section":
-            "Upload Resume",
-
-        "jobs-section":
-            "Job Recommendations",
-
-        "history-section":
-            "Resume History",
-
-        "profile-section":
-            "Profile"
+        "dashboard-section": "Dashboard",
+        "guide-section": "How It Works",
+        "upload-section": "Upload Resume",
+        "jobs-section": "Job Recommendations",
+        "history-section": "Resume History",
+        "profile-section": "Profile",
+        "skills-section": "Recommended Skills"
     };
 
 
@@ -122,6 +115,76 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
     });
+
+
+    /* -----------------------------------------------------
+       SHARED: FLOWCHART RENDERER
+    ----------------------------------------------------- */
+
+    function renderFlowchart(steps) {
+
+        return steps
+            .map(
+                (step, index) => `
+                    <div class="flow-step">
+                        <div class="flow-step-badge">${index + 1}</div>
+                        <div class="flow-step-body">
+                            <div class="flow-step-title">${step.title}</div>
+                            <div class="flow-step-duration">${step.duration}</div>
+                            <div class="flow-step-detail">${step.detail}</div>
+                        </div>
+                    </div>
+                    ${index < steps.length - 1 ? '<div class="flow-connector"></div>' : ""}
+                `
+            )
+            .join("");
+
+    }
+
+
+    /* -----------------------------------------------------
+       PROJECT GUIDE (static, no API call)
+    ----------------------------------------------------- */
+
+    const guideSteps = [
+        {
+            title: "Upload your resume",
+            duration: "1 minute",
+            detail: "Go to Upload Resume and add a PDF, DOCX, or TXT file. SkillBridge reads it and pulls out the skills it can detect."
+        },
+        {
+            title: "See your detected skills",
+            duration: "Instant",
+            detail: "After uploading, your skill count appears on the Dashboard, and every past upload is saved under Resume History."
+        },
+        {
+            title: "Explore job recommendations",
+            duration: "A few minutes",
+            detail: "Go to Job Recommendations and search keywords (or leave them blank to auto-use your resume's top skills) to see matching live job postings."
+        },
+        {
+            title: "Check Recommended Skills for a target role",
+            duration: "A few minutes",
+            detail: "Type any job title — like Cloud Engineer, Data Analyst, or Product Manager — under Recommended Skills. SkillBridge compares your resume's skills against real, current postings for that role."
+        },
+        {
+            title: "Follow the study flowchart for each missing skill",
+            duration: "Days to weeks, per skill",
+            detail: "Every recommended skill comes with its own step-by-step flowchart, plus Docs, Course, and YouTube links to actually learn it."
+        },
+        {
+            title: "Ask the Assistant anytime",
+            duration: "Instant",
+            detail: "Type or say any job title to the SkillBridge Assistant in the corner, and it'll read your match percentage and top skills to learn out loud."
+        }
+    ];
+
+    const guideFlowchartEl =
+        document.getElementById("guide-flowchart");
+
+    if (guideFlowchartEl) {
+        guideFlowchartEl.innerHTML = renderFlowchart(guideSteps);
+    }
 
 
     /* -----------------------------------------------------
@@ -313,6 +376,118 @@ document.addEventListener("DOMContentLoaded", () => {
                         "Job search error:",
                         error
                     );
+
+                }
+
+            }
+        );
+    }
+
+
+    /* -----------------------------------------------------
+       SKILL RECOMMENDATIONS
+    ----------------------------------------------------- */
+
+    const roleInput =
+        document.getElementById("role-input");
+
+    const getSkillsBtn =
+        document.getElementById("get-skills-btn");
+
+    const skillsStatusEl =
+        document.getElementById("skills-status");
+
+    const skillsResultEl =
+        document.getElementById("skills-result");
+
+
+    if (getSkillsBtn) {
+
+        getSkillsBtn.addEventListener(
+            "click",
+            async () => {
+
+                const role = roleInput.value.trim();
+
+                if (!role) {
+                    skillsStatusEl.textContent = "Type a job title first.";
+                    return;
+                }
+
+                skillsStatusEl.textContent =
+                    "Analyzing current job postings...";
+
+                skillsResultEl.innerHTML = "";
+
+
+                try {
+
+                    const data =
+                        await SkillBridgeAPI.getSkillRecommendations(role);
+
+
+                    if (data.error) {
+
+                        skillsStatusEl.textContent =
+                            data.error;
+
+                        return;
+                    }
+
+
+                    skillsStatusEl.textContent =
+                        `Based on ${data.based_on_postings} postings — Match: ${data.match_percentage}%`;
+
+
+                    const matchedHtml =
+                        data.matched_skills
+                            .map(s => `<li>${s}</li>`)
+                            .join("") || "<li>None yet</li>";
+
+
+                    const recommendedHtml =
+                        data.recommended_skills
+                            .map(
+                                item => `
+                                    <div class="skill-card">
+
+                                        <div class="skill-card-header">
+                                            <strong>${item.skill}</strong>
+                                        </div>
+
+                                        <div class="skill-links">
+                                            <a href="${item.resources.docs}" target="_blank" rel="noopener">Docs</a>
+                                            <a href="${item.resources.course}" target="_blank" rel="noopener">Course</a>
+                                            <a href="${item.resources.youtube}" target="_blank" rel="noopener">YouTube</a>
+                                        </div>
+
+                                        <div class="flowchart">
+                                            ${renderFlowchart(item.steps)}
+                                        </div>
+
+                                    </div>
+                                `
+                            )
+                            .join("") || "<p>None — fully matched!</p>";
+
+
+                    skillsResultEl.innerHTML = `
+                        <h4>You already have:</h4>
+                        <ul>${matchedHtml}</ul>
+
+                        <h4>Recommended to learn:</h4>
+                        ${recommendedHtml}
+                    `;
+
+                } catch (error) {
+
+                    console.error(
+                        "Skill recommendation error:",
+                        error
+                    );
+
+                    skillsStatusEl.textContent =
+                        "Could not load recommendations.";
 
                 }
 

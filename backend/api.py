@@ -16,6 +16,7 @@ from resume import allowed_file, extract_text
 from nlp import extract_skills
 from linkedin import search_jobs
 from modules import match_skills_to_jobs
+from skill_recommender import recommend_skills
 
 
 api_bp = Blueprint(
@@ -275,9 +276,63 @@ def recommend():
 
     return jsonify(result), 200
 
-    # ==============================
+
+# =========================================================
+# SKILL RECOMMENDATIONS
+# =========================================================
+
+@api_bp.route("/skill-recommendations", methods=["POST"])
+@jwt_required()
+def skill_recommendations():
+
+    user_email = get_jwt_identity()
+
+    data = request.get_json(
+        silent=True
+    ) or {}
+
+    target_role = data.get(
+        "target_role",
+        ""
+    )
+
+    if not target_role:
+
+        return jsonify({
+            "error": "target_role is required"
+        }), 400
+
+    # Pull the most recent resume's skills for this user
+    cursor.execute(
+        """
+        SELECT skills
+        FROM resumes
+        WHERE user_email = %s
+        ORDER BY id DESC
+        LIMIT 1
+        """,
+        (user_email,)
+    )
+
+    row = cursor.fetchone()
+
+    user_skills = (
+        row["skills"].split(",")
+        if row and row["skills"]
+        else []
+    )
+
+    result = recommend_skills(
+        user_skills,
+        target_role
+    )
+
+    return jsonify(result), 200
+
+
+# =========================================================
 # ALL USERS + ALL RESUMES
-# ==============================
+# =========================================================
 
 @api_bp.route("/admin/all-data", methods=["GET"])
 @jwt_required()

@@ -87,6 +87,16 @@
 
 
         <a href="#"
+           data-target="skills-section"
+           class="nav-link">
+
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span>Recommended Skills</span>
+
+        </a>
+
+
+        <a href="#"
            data-target="history-section"
            class="nav-link">
 
@@ -515,6 +525,89 @@
 
 
     <!-- =====================================
+         SKILL RECOMMENDATIONS
+    ===================================== -->
+
+    <section
+        id="skills-section"
+        class="section"
+    >
+
+        <div class="page-header">
+
+            <span>AI SKILL GAP ANALYSIS</span>
+
+            <h1>Recommended Skills</h1>
+
+            <p>
+                Type any IT job title and see which skills real,
+                current postings ask for — and what you're missing.
+            </p>
+
+        </div>
+
+
+        <div class="panel">
+
+            <label for="role-input">
+                Target Job Role
+            </label>
+
+            <input
+                type="text"
+                id="role-input"
+                list="role-suggestions"
+                placeholder="Example: Cloud Engineer"
+            >
+
+            <datalist id="role-suggestions">
+                <option value="Software Engineer">
+                <option value="Cloud Engineer">
+                <option value="DevOps Engineer">
+                <option value="Data Scientist">
+                <option value="Data Analyst">
+                <option value="Machine Learning Engineer">
+                <option value="Frontend Developer">
+                <option value="Backend Developer">
+                <option value="Full Stack Developer">
+                <option value="Cybersecurity Analyst">
+                <option value="Network Engineer">
+                <option value="Systems Administrator">
+                <option value="Database Administrator">
+                <option value="QA Engineer">
+                <option value="Product Manager">
+                <option value="Business Analyst">
+                <option value="IT Support Specialist">
+                <option value="Site Reliability Engineer">
+                <option value="Mobile App Developer">
+                <option value="Solutions Architect">
+            </datalist>
+
+
+            <button
+                id="get-skills-btn"
+                class="primary-btn"
+            >
+
+                <i class="fa-solid fa-graduation-cap"></i>
+
+                Get Recommendations
+
+            </button>
+
+
+            <div id="skills-status"></div>
+
+        </div>
+
+
+        <div id="skills-result" class="panel"></div>
+
+    </section>
+
+
+
+    <!-- =====================================
          RESUME HISTORY
     ===================================== -->
 
@@ -621,6 +714,41 @@
 
 
 <!-- =====================================
+     VOICE BOT
+===================================== -->
+
+<div id="voicebot" class="voicebot-panel">
+
+    <div class="voicebot-header">
+        <i class="fa-solid fa-robot"></i>
+        <span>SkillBridge Assistant</span>
+    </div>
+
+    <div id="voicebot-log" class="voicebot-log"></div>
+
+    <div class="voicebot-input-row">
+
+        <button id="voicebot-mic-btn" title="Speak">
+            <i class="fa-solid fa-microphone"></i>
+        </button>
+
+        <input
+            type="text"
+            id="voicebot-text-input"
+            placeholder='Try: "recommend skills for cloud engineer"'
+        >
+
+        <button id="voicebot-send-btn">
+            <i class="fa-solid fa-paper-plane"></i>
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================
      EXISTING JAVASCRIPT
 ===================================== -->
 
@@ -628,101 +756,7 @@
 <script src="app.js"></script>
 <script src="joblist.js"></script>
 <script src="dashboard.js"></script>
-
-
-<!-- =====================================
-     SECTION SWITCHING
-===================================== -->
-
-<script>
-
-document.querySelectorAll(".nav-link").forEach(link => {
-
-    link.addEventListener("click", function(e) {
-
-        e.preventDefault();
-
-        const target =
-            this.getAttribute("data-target");
-
-        document
-            .querySelectorAll(".section")
-            .forEach(section => {
-
-                section.classList.remove("active");
-
-            });
-
-
-        document
-            .getElementById(target)
-            .classList.add("active");
-
-
-        document
-            .querySelectorAll(".nav-link")
-            .forEach(nav => {
-
-                nav.classList.remove("active-link");
-
-            });
-
-
-        this.classList.add("active-link");
-
-
-        const title =
-            this.querySelector("span").textContent;
-
-        document.getElementById(
-            "sectionTitle"
-        ).textContent = title;
-
-    });
-
-});
-
-
-
-/* Hero button */
-
-document
-    .querySelectorAll("[data-target]")
-    .forEach(button => {
-
-        if (
-            !button.classList.contains("nav-link")
-        ) {
-
-            button.addEventListener(
-                "click",
-                function() {
-
-                    const target =
-                        this.getAttribute("data-target");
-
-                    document
-                        .querySelectorAll(".section")
-                        .forEach(section => {
-
-                            section.classList.remove(
-                                "active"
-                            );
-
-                        });
-
-                    document
-                        .getElementById(target)
-                        .classList.add("active");
-
-                }
-            );
-
-        }
-
-    });
-
-</script>
+<script src="voicebot.js"></script>
 
 </body>
 </html>

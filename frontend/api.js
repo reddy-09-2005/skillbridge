@@ -55,4 +55,27 @@ async function searchJobs(keywords, location, limit = 25) {
   return res.json();
 }
 
-window.SkillBridgeAPI = { uploadResume, getRecommendations, searchJobs, API_BASE_URL };
+async function getSkillRecommendations(targetRole) {
+  const res = await fetch(`${API_BASE_URL}/skill-recommendations`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify({ target_role: targetRole }),
+  });
+  if (!res.ok) throw new Error((await res.json()).error || "Skill recommendation failed");
+  return res.json();
+}
+
+async function getAvailableRoles() {
+  const res = await fetch(`${API_BASE_URL}/available-roles`);
+  if (!res.ok) throw new Error("Could not load roles");
+  return res.json();
+}
+
+window.SkillBridgeAPI = {
+  uploadResume,
+  getRecommendations,
+  searchJobs,
+  getSkillRecommendations,
+  getAvailableRoles,
+  API_BASE_URL,
+};
